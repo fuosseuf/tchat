@@ -1,42 +1,129 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>TCHAT</title>
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-	</head>
-	<body>
-		<div id="users">
-			<h1>Utilisateurs connectés</h1>
-		</div>
-		<div id="messages">
-			<div class="message" id="msgtpl" style="display: node">
-				<img src="{{user.avatar}}">
-				<div class="info">
-					<p><strong>{{user.username}}</strong></p>
-					<p>{{message}}</p>
-					<span class="date">{{h}}:{{m}}</span>
-				</div>
-			</div>
-		</div>
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>Talk to Me!</title>
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME  CSS -->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE CSS -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+</head>
+<body>
 
-		<div id="login">
-			<form id="loginform" action="">
-				<h1>Bienvenue</h1>
-				<p>Entrer vos informations de connexion</p>
-				<input id="username" type="text" name="login" placeholder="username" />
-				<input id="mail" type="mail" name="mail" placeholder="E-mail" />
-				<input type="submit" name="Envoyer">
-			</form>
-		</div>
 
-		<form id="form" action="">
-			<input type="text" name="" id="message" class="text">
-			<input type="submit" id="send" value="Envoyer message" class="submit">
-		</form>
+    <div class="container">
+        <div class="row pad-top pad-bottom">
 
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script type="text/javascript" src="js/mustache.js"></script>
-		<script src="http://localhost:1337/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="js/client.js"></script>
-	</body>
+
+            <div class=" col-lg-8 col-md-6 col-sm-6">
+                <div class="chat-box-div">
+                    <div class="chat-box-head">
+                        HISTORIQUE DU SALON
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="fa fa-cogs"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#"><span class="fa fa-map-marker"></span>&nbsp;Invisible</a></li>
+                                    <li><a href="#"><span class="fa fa-comments-o"></span>&nbsp;Online</a></li>
+                                    <li><a href="#"><span class="fa fa-lock"></span>&nbsp;Busy</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#"><span class="fa fa-circle-o-notch"></span>&nbsp;Logout</a></li>
+                                </ul>
+                            </div>
+                    </div>
+                    <div  id="messages" class="panel-body chat-box-main">
+                    	<div class="message" id="msgtpl-left" style="display: none">
+							<div class="chat-box-left">{{message}}</div>
+                        	<div class="chat-box-name-left">
+                            	<img src="{{user.avatar}}" alt="{{user.username}}" class="img-circle" />
+                            	-  {{user.username}}
+                           	</div>
+                            <hr class="hr-clas" />
+                        </div>
+                        
+                        <div class="message" id="msgtpl-right" style="display: none">
+							<div class="chat-box-right">{{message}}</div>
+                        	<div class="chat-box-name-right">
+                            	<img src="{{user.avatar}}" alt="{{user.username}}" class="img-circle" />
+                            	-  {{user.username}}
+                            	</div>
+                            <hr class="hr-clas" />
+                        </div>
+                    </div>
+                    <div class="chat-box-footer">
+                        <div class="input-group">
+	                        <form id="form" action="">
+	                            <input type="text" id="message" class="form-control" placeholder="Entrez votre texte ici...">
+	                            <span class="input-group-btn">
+	                                <button class="btn btn-info" type="submit">SEND</button>
+	                            </span>
+	                        </form>
+
+	                        <div id="login">
+								<form id="loginform" action="">
+									<h1>Bienvenue</h1>
+									<p>Entrer vos informations de connexion</p>
+									<input id="username" type="text" name="login" placeholder="username" />
+									<input id="mail" type="mail" name="mail" placeholder="E-mail" />
+									<input type="submit" name="Envoyer">
+								</form>
+							</div>
+					    </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-3 col-sm-3">
+                <div class="chat-box-online-div">
+                    <div class="chat-box-online-head">
+                        ONLINE USERS (120)
+                    </div>
+                    <div id="users" class="panel-body chat-box-online">
+                    	<div id="usertpl-left" style="display: none">
+	                        <div class="chat-box-online-left">
+	                            <img src="{{avatar}}" alt="{{username}}" class="img-circle" />
+	                            - {{username}}
+	                            <br />
+	                            ( <small>Active from 3 hours</small> )
+	                        </div>
+	                        <hr class="hr-clas-low" />
+                        </div>
+                        <div id="usertpl-right" style="display: none">
+	                        <div class="chat-box-online-right">
+	                            <img src="{{user.avatar}}" alt="{{username}}" class="img-circle" />
+	                            - {{username}}
+	                            <br />
+	                            ( <small>Active from 3 hours</small> )
+	                        </div>
+	                        <hr class="hr-clas-low" />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- USING SCRIPTS BELOW TO REDUCE THE LOAD TIME -->
+    <!-- CORE JQUERY SCRIPTS FILE -->
+    <script src="assets/js/jquery-1.11.1.js"></script>
+    <!-- CORE BOOTSTRAP SCRIPTS  FILE -->
+    <script src="assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/mustache.js"></script>
+	<script src="http://localhost:1337/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="js/client.js"></script>
+</body>
+
 </html>

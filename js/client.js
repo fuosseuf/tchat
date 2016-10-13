@@ -1,7 +1,13 @@
 (function ($) {
 	$('#form').hide();
-	var msgtpl = $('#msgtpl').html();
-	$('#msgtpl').remove();
+	var msgtpl_left = $('#msgtpl-left').html();
+	var msgtpl_right = $('#msgtpl-right').html();
+	var usertpl_left = $('#usertpl-left').html();
+	var usertpl_right = $('#usertpl-right').html();
+	$('#msgtpl-left').remove();
+	$('#msgtpl-right').remove();
+	$('#usertpl-left').remove();
+	$('#usertpl-right').remove();
 	var socket = io.connect('http://localhost:1337');
 
 	$('#loginform').submit(function(e){
@@ -12,8 +18,8 @@
 		});
 	});
 
-	socket.on('newUser', function(user){
-		$('#users').append('<h2 id="'+user.id+'"><img id='+user.id+' src="'+user.avatar+'" />'+user.username+'</h2>');
+	socket.on('newUser', function(user){ 
+		$('#users').append(Mustache.render(usertpl_left, user));
 	});
 
 	socket.on('exitUser', function(user){
@@ -46,7 +52,7 @@
 	* Reception message
 	*/
 	socket.on('addMsg', function(msg){
-		$('#messages').append('<div class="message">'+Mustache.render(msgtpl, msg) + '</div>');
+		$('#messages').append(Mustache.render(msgtpl_right, msg));
 	})
 
 
