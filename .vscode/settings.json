@@ -1,0 +1,11 @@
+{
+    "jenkins-jack.jenkins.connections": [
+        {
+            "name": "localhost",
+            "uri": "http://127.0.0.1:8090",
+            "username": "rodrigue",
+            "password": "11165e4ad3ab869e2454595aa706b7a8da",
+            "active": true
+        }
+    ]
+}
